@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import './Weather.css';
 
 const Weather = () => {
   const [data, setData] = useState({});
   const [location, setLocation] = useState('');
+  const [cityTime, setCityTime] = useState('');
+  const intervalRef = useRef(null); // To store the interval reference
 
   const API_KEY = 'f24b4a280e5a809e46ca765aa9d2275e';
 
@@ -15,6 +17,7 @@ const Weather = () => {
         const url = `https://api.openweathermap.org/data/2.5/weather?q=${defaultLocation}&units=metric&appid=${API_KEY}`;
         const response = await axios.get(url);
         setData(response.data);
+        startCityTimeUpdate(response.data.timezone);
       } catch (error) {
         console.error('Error fetching default location weather:', error);
       }
@@ -22,6 +25,31 @@ const Weather = () => {
 
     fetchDefaultLocation();
   }, [API_KEY]);
+
+  const startCityTimeUpdate = (timezone) => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current); // Clear any existing interval
+    }
+
+    const update = () => {
+      const utcTime = new Date();
+      const cityTime = new Date(utcTime.getTime() + timezone * 1000);
+      const formattedTime = cityTime.toLocaleString('en-GB', {
+        timeZone: 'UTC',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour12: false,
+      });
+      setCityTime(formattedTime);
+    };
+
+    update();
+    intervalRef.current = setInterval(update, 1000); // Update every second
+  };
 
   const search = async () => {
     const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=Metric&appid=${API_KEY}`;
@@ -33,6 +61,7 @@ const Weather = () => {
       } else {
         setData(response.data);
         setLocation('');
+        startCityTimeUpdate(response.data.timezone);
       }
     } catch (error) {
       if (error.response && error.response.status === 404) {
@@ -41,7 +70,6 @@ const Weather = () => {
         console.log('An unexpected error occurred', error);
       }
     }
-    console.log(data);
   };
 
   const handleInputChange = (e) => {
@@ -71,6 +99,14 @@ const Weather = () => {
     }
   };
 
+  useEffect(() => {
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current); // Cleanup interval on unmount
+      }
+    };
+  }, []);
+
   return (
     <div className="weather">
       <div className="search">
@@ -99,6 +135,9 @@ const Weather = () => {
           <div className="temp">{data.main ? Math.floor(data.main.temp) + '*C' : ''}</div>
         </div>
       )}
+      <div className="city-time">
+        {cityTime && <div>City Time: {cityTime}</div>}
+      </div>
     </div>
   );
 };

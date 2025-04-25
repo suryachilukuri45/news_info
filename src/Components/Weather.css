@@ -1,0 +1,97 @@
+.weather{
+    width: 100%;
+    min-width: 28rem;
+    height: 45%;
+    background-color: #111214;
+    border-radius: 1rem;
+    padding: 2rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    row-gap: 3rem;
+}
+
+.search{
+    display: flex;
+    flex-direction: column;
+    row-gap: 1rem;
+}
+
+.search-top{
+    display: flex;
+    column-gap: 1rem;
+}
+
+.search-location{
+    position:  relative;
+}
+
+.location{
+    font-family: "Comfortaa",'sans-serif';
+    font-size:1.9rem;
+    font-weight: bold;
+}
+
+.search-location input{
+    width: clamp(15rem, 14cqi, 25rem);
+    height: 4rem;
+    border:none; 
+    font-size: 1.5rem;
+    background-color: transparent;
+    color: #ddd;
+    border-bottom:0.1rem solid #aaa;
+}
+
+.search-location i{
+    position: absolute;
+    top:50%;
+    transform: translateY(-50%);
+    right:0.8rem ;
+    color:#fff;
+}
+
+
+.weather-data{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 2rem;
+}
+
+.weather-data i{
+    font-size: 5rem;
+}
+
+.weather-data i.bxs-sun{
+    color:#f9b34b;
+} 
+
+.weather-data i.bxs-cloud-lightning{
+    color:#154abd;
+} 
+
+.weather-data i.bxs-cloud{
+    color:#fff;
+} 
+
+.weather-data i.bxs-cloud-rain{
+    color:#5fd1f9;
+} 
+
+.weather-data i.bxs-cloud-snow{
+    color:#52e5e7;
+} 
+
+.weather-type, .temp{
+    font-family: "Comfortaa", sans-serif;
+    font-size: 2rem;
+    color:#ddd; 
+}
+
+.not-found{
+    font-family: 'Comfortaa' ,sans-serif;
+    font-size: 1.5rem;
+    color:#DDD;
+    margin-bottom: 12rem;
+}

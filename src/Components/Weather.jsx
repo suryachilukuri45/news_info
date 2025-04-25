@@ -6,7 +6,7 @@ const Weather = () => {
   const [data, setData] = useState({});
   const [location, setLocation] = useState('');
 
-  const API_KEY = process.env.WEATHER_API_KEY;
+  const API_KEY = 'f24b4a280e5a809e46ca765aa9d2275e';
 
   useEffect(() => {
     const fetchDefaultLocation = async () => {
